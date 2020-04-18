@@ -1,0 +1,95 @@
+{
+    "namespace": "streams",
+    "name": "tweet",
+    "type": "record",
+    "fields": [
+      {
+        "name": "CreatedAt",
+        "type": {
+          "type": "long",
+          "format_as_time": "unix_long",
+          "arg.properties": {
+            "iteration": {
+              "start": 1,
+              "step": 10
+            }
+          }
+        }
+      },
+      {
+        "name": "Id",
+        "type": {
+          "type": "long",
+          "arg.properties": {
+            "iteration": {
+              "start": 10000,
+              "step": 5
+            }
+          }
+        }
+      },
+      {
+        "name": "Text",
+        "type": {
+          "type": "string",
+          "arg.properties": {
+            "options": [
+              "Bitcoin has a lot of promise. I'm not too sure about #ethereum",
+              "Ethereum is cool"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Lang",
+        "type": {
+          "type": "string",
+          "arg.properties": {
+            "options": [
+              "en"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Retweet",
+        "type": {
+          "type": "boolean",
+          "arg.properties": {
+            "options": [
+              false
+            ]
+          }
+        }
+      },
+      {
+        "name": "Source",
+        "type": {
+          "type": "string",
+          "arg.properties": {
+            "regex": ""
+          }
+        }
+      },
+      {
+        "name": "User",
+        "type": {
+          "type": "map",
+          "values": "string",
+          "arg.properties": {
+            "options": [
+              {
+                "Id": "14377870",
+                "Name": "MagicalPipelines",
+                "Description": "Learn something magical today.",
+                "ScreenName": "MagicalPipelines",
+                "URL": "http://www.magicalpipelines.com",
+                "FollowersCount": "248247",
+                "FriendsCount": "16417"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
