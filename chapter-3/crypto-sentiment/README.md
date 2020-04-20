@@ -6,7 +6,7 @@ There are two easy options for running the example code here.
 First, if you want to see this running without setting up a service account for the translation and sentiment analysis service, you can run the following command.
 
 ```sh
-docker run --name ch2-sandbox \
+docker run --name ch3-sandbox \
   -v "$(pwd)":/app \
   -w /app \
   -ti magicalpipelines/cp-sandbox:latest  bash -c "\
@@ -55,7 +55,7 @@ export GCP_CREDS_PATH=~/gcp-demo-key.json
 
 Finally, run the Kafka Streams application in the Docker sandbox container:
 ```sh
-docker run --name ch2-sandbox \
+docker run --name ch3-sandbox \
   -v "$(pwd)":/app \
   -w /app \
   -v "${GCP_CREDS_PATH}":/secrets/credentials.json \
@@ -72,7 +72,7 @@ Now, follow the instructions in [Producing Test Data](#-producing-test-data).
 We have a couple of test records saved to the `data/test.json` file. Feel free to modify the data in this file as you see fit. Then, run the following command to produce the test data to the source topic (`tweets`).
 
 ```sh
-docker exec -ti ch2-sandbox bash -c "\
+docker exec -ti ch3-sandbox bash -c "\
   kafka-console-producer \
   --broker-list localhost:9092 \
   --topic tweets < data/test.json"
@@ -80,7 +80,7 @@ docker exec -ti ch2-sandbox bash -c "\
 
 In another tab, run the following command to consume data from the sink topic (`crypto-sentiment`).
 ```sh
-docker exec -ti ch2-sandbox \
+docker exec -ti ch3-sandbox \
  kafka-avro-console-consumer \
  --bootstrap-server localhost:9092 \
  --topic crypto-sentiment \
