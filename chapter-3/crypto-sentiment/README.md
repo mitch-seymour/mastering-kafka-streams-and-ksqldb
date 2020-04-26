@@ -2,11 +2,15 @@
 
 There are two easy options for running the example code here.
 
-## Option 1
-First, if you want to see this running without setting up a service account for the translation and sentiment analysis service, you can run the following command.
+## Option 1 (dummy translation / sentiment analysis)
+First, if you want to see this running without setting up a service account for the translation and sentiment analysis service, you can run the following command:
 
 ```sh
-docker run --name ch3-sandbox \
+# you must be in this directory since we're mounting the app code inside of a container
+$ cd /path/to/mastering-kafka-streams-and-ksqldb.chapter-3/crypto-sentiment/
+
+# mount the code into a Docker container and run
+$ docker run --name ch3-sandbox \
   -v "$(pwd)":/app \
   -w /app \
   -ti magicalpipelines/cp-sandbox:latest  bash -c "\
@@ -17,7 +21,7 @@ docker run --name ch3-sandbox \
 
 Now, follow the instructions in [Producing Test Data](#-producing-test-data).
 
-## Option 2
+## Option 2 (actual translation / sentiment analysis)
 If you want the app to actually perform tweet translation and sentiment analysis, you will need to setup a service account with Google Cloud.
 
 You can download `gcloud` by following the instructions [here](https://cloud.google.com/sdk/docs/downloads-interactive#mac). Then, run the following commands to enable the translation / NLP (natural language processing) APIs, and to download your service account key.
@@ -55,7 +59,11 @@ export GCP_CREDS_PATH=~/gcp-demo-key.json
 
 Finally, run the Kafka Streams application in the Docker sandbox container:
 ```sh
-docker run --name ch3-sandbox \
+# you must be in this directory since we're mounting the app code inside of a container
+$ cd /path/to/mastering-kafka-streams-and-ksqldb.chapter-3/crypto-sentiment/
+
+# mount the code into a Docker container and run
+$ docker run --name ch3-sandbox \
   -v "$(pwd)":/app \
   -w /app \
   -v "${GCP_CREDS_PATH}":/secrets/credentials.json \
