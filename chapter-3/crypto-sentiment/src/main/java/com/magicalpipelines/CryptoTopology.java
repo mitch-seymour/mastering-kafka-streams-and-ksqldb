@@ -8,7 +8,6 @@ import com.magicalpipelines.serialization.Tweet;
 import com.magicalpipelines.serialization.json.JsonSerdes;
 import com.mitchseymour.kafka.serialization.avro.AvroSerdes;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -78,17 +77,9 @@ class CryptoTopology {
               // perform entity-level sentiment analysis
               List<EntitySentiment> results = languageClient.getEntitySentiment(tweet);
 
-              // get an iterator for iterating through the results
-              Iterator<EntitySentiment> it = results.iterator();
-
               // remove all entity results that don't match a currency
-              while (it.hasNext()) {
-                EntitySentiment entitySentiment = it.next();
-                if (!currencies.contains(entitySentiment.getEntity())) {
-                  // no currency match
-                  it.remove();
-                }
-              }
+              results.removeIf(
+                  entitySentiment -> !currencies.contains(entitySentiment.getEntity()));
 
               return results;
             });
