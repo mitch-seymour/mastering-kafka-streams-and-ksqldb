@@ -27,7 +27,7 @@ class ProcessorAppTest {
   @BeforeEach
   void setup() {
     // build the topology with a dummy client
-    Topology topology = CryptoTopology.build(new DummyClient());
+    Topology topology = CryptoTopology.build(new DummyClient(), false);
 
     // create a test driver. we will use this to pipe data to our topology
     Properties props = new Properties();

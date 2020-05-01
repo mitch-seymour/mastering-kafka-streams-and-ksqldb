@@ -5,8 +5,8 @@ import com.magicalpipelines.language.GcpClient;
 import com.magicalpipelines.language.LanguageClient;
 import com.magicalpipelines.model.EntitySentiment;
 import com.magicalpipelines.serialization.Tweet;
+import com.magicalpipelines.serialization.avro.AvroSerdes;
 import com.magicalpipelines.serialization.json.JsonSerdes;
-import com.mitchseymour.kafka.serialization.avro.AvroSerdes;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.kafka.common.serialization.Serdes;
@@ -30,6 +30,10 @@ class CryptoTopology {
   }
 
   public static Topology build(LanguageClient languageClient) {
+    return build(languageClient, true);
+  }
+
+  public static Topology build(LanguageClient languageClient, boolean useSchemaRegistry) {
     // the builder is used to construct the topology
     StreamsBuilder builder = new StreamsBuilder();
 
@@ -84,9 +88,21 @@ class CryptoTopology {
               return results;
             });
 
-    enriched.to(
-        "crypto-sentiment",
-        Produced.with(Serdes.ByteArray(), AvroSerdes.get(EntitySentiment.class)));
+    // write to the output topic. note: the following code shows how to use
+    // both a registry-aware Avro Serde and a registryless Avro Serde
+    if (useSchemaRegistry) {
+      enriched.to(
+          "crypto-sentiment",
+          // registry-aware Avro Serde
+          Produced.with(Serdes.ByteArray(), AvroSerdes.Tweet("http://localhost:8081", false)));
+    } else {
+      enriched.to(
+          "crypto-sentiment",
+          Produced.with(
+              Serdes.ByteArray(),
+              // registryless Avro Serde
+              com.mitchseymour.kafka.serialization.avro.AvroSerdes.get(EntitySentiment.class)));
+    }
 
     return builder.build();
   }
