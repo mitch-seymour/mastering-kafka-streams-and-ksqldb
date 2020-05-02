@@ -7,7 +7,7 @@ First, if you want to see this running without setting up a service account for 
 
 ```sh
 # you must be in this directory since we're mounting the app code inside of a container
-$ cd /path/to/mastering-kafka-streams-and-ksqldb.chapter-3/crypto-sentiment/
+$ cd /path/to/mastering-kafka-streams-and-ksqldb/chapter-3/crypto-sentiment/
 
 # mount the code into a Docker container and run
 $ docker run --name ch3-sandbox \
