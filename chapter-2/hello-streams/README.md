@@ -40,7 +40,7 @@ $ ./gradlew runProcessorApi --info
 Once the dependencies are downloaded and the application is running, following the instructions under the __Producing Test Data__ section below.
 
 # Producing Test Data
-Once the Kafka Streams application is running (either the DSL or Processor API version), produce some data to the source topic (`hello-world`) using the `kafka-console-producer` included in the sandbox.
+Once the Kafka Streams application is running (either the DSL or Processor API version), open a new shell tab and produce some data to the source topic (`hello-world`) using the `kafka-console-producer` included in the sandbox.
 
 ```sh
 docker exec -ti ch2-sandbox bash -c "\
