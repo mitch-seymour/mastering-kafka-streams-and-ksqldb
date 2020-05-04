@@ -28,7 +28,7 @@ Once you're logged into the sandbox container, you can run the high-level DSL ex
 $ ./gradlew run --info
 ```
 
-Once the dependencies are downloaded and the application is running, following the instructions under the __Producing Test Data__ section at the bottom of this README.
+Once the dependencies are downloaded and the application is running (this may take a few minutes the first time you run the app, but will be much faster during subsequent runs), following the instructions under the __Producing Test Data__ section at the bottom of this README.
 
 ## Processor API example
 
@@ -37,7 +37,7 @@ Once you're logged into the sandbox container, you can run the low-level Process
 $ ./gradlew runProcessorApi --info
 ```
 
-Once the dependencies are downloaded and the application is running, following the instructions under the __Producing Test Data__ section below.
+Once the dependencies are downloaded and the application is running (this may take a few minutes the first time you run the app, but will be much faster during subsequent runs), following the instructions under the __Producing Test Data__ section below.
 
 # Producing Test Data
 Once the Kafka Streams application is running (either the DSL or Processor API version), open a new shell tab and produce some data to the source topic (`hello-world`) using the `kafka-console-producer` included in the sandbox.
