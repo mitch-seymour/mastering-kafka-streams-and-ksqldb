@@ -1,7 +1,10 @@
 # Mastering Kafka Streams and ksqlDB (early release)
 Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour
 
+<a href="https://www.kafka-streams-book.com/"><img src="https://mcusercontent.com/987def4caf0bb040419d778f2/images/3e472381-71aa-4a63-a28b-0d2e245da55e.png" width="300"></a>
+
 [book]: https://www.kafka-streams-book.com/
+
 
 # Early release notes
 The chapter numbers are subject to change. Please find the appropriate tutorial based on the chapter _name_ below:
@@ -9,10 +12,11 @@ The chapter numbers are subject to change. Please find the appropriate tutorial 
   - [Stateless Processing](chapter-3/crypto-sentiment)
 
 # Why read this book?
-- Kafka Streams and ksqlDB are both extremely fun to use
+
+- Kafka Streams and ksqlDB greatly simplify the process of building stream processing applications
+- As an added benefit, they are also both extremely fun to use
 - Kafka is the [fourth fastest growing tech skill][indeed] mentioned in job postings from 2014-2019. Sharpening your skills in this area has career benefits
 - By learning Kafka Streams and ksqlDB, you will be well prepared for tackling a wide-range of business problems, including: streaming ETL, data enrichment, anomaly detection, data masking, data filtering, and more
-- All the cool kids are using it (Mailchimp, Slack, Activision, Red Hat, Walmart, Pinterest, and many more)
 
 
 [indeed]: https://www.techrepublic.com/article/the-20-fastest-rising-and-sharpest-declining-tech-skills-of-the-past-5-years/
