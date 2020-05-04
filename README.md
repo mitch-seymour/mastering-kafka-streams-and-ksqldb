@@ -1,5 +1,12 @@
 # Mastering Kafka Streams and ksqlDB (early release)
-Code repository for the upcoming O'Reilly book: _Mastering Kafka Streams and ksqlDB_ by Mitch Seymour
+Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour
+
+[book]: https://www.kafka-streams-book.com/
+
+# Early release notes
+The chapter numbers are subject to change. Please find the appropriate tutorial based on the chapter _name_ below:
+  - [Getting Started with Kafka Streams](chapter-2/hello-streams)
+  - [Stateless Processing](chapter-3/crypto-sentiment)
 
 # Why read this book?
 - Kafka Streams and ksqlDB are both extremely fun to use
