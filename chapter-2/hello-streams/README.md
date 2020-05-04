@@ -1,3 +1,8 @@
+# About
+This code corresponds with Chapter 2 in the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour. This includes two "Hello, world" style applications: one implemented using the high-level DSL, and the other implemented using the Processor API.
+
+[book]: https://www.kafka-streams-book.com/
+
 # Running Locally
 The only dependency for running these examples is [Docker][docker]. Everything else is executed within a sandbox image.
 
