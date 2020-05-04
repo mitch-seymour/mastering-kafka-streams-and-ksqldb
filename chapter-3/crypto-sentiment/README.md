@@ -1,6 +1,14 @@
-# Running Locally
+# About
+This code corresponds with Chapter 3 in the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour. This tutorial covers **Stateless processing** in Kafka Streams. Here, we demonstrate many stateless operators in Kafka Streams' high-level DSL by building an application that transforms and enriches tweets about various cryptocurrencies.
 
-There are two easy options for running the example code here.
+[book]: https://www.kafka-streams-book.com/
+
+# Running Locally
+The only dependency for running these examples is [Docker][docker]. Everything else is executed within a sandbox image.
+
+[docker]: https://www.docker.com/products/docker-desktop
+
+There are two easy options for running the example code here, depending on whether or not you want to use a dummy client for performing tweet translation and sentiment analysis, or if you actually want to use Google's Natural Language API (which requires a service account) to perform these tasks. If you don't want to bother setting up a service account, no worries. Just follow the steps under **Option 1**.
 
 ## Option 1 (dummy translation / sentiment analysis)
 First, if you want to see this running without setting up a service account for the translation and sentiment analysis service, you can run the following command:
