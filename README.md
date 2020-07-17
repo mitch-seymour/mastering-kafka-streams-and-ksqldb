@@ -9,7 +9,9 @@ Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksq
 # Early release notes
 The chapter numbers are subject to change. Please find the appropriate tutorial based on the chapter _name_ below:
   - [Getting Started with Kafka Streams](chapter-2/hello-streams)
-  - [Stateless Processing](chapter-3/crypto-sentiment)
+  - [Stateless Processing (Sentiment Analysis of Cryptcurreny Tweets) ](chapter-3/crypto-sentiment)
+  - [Stateful Processing (Video game leaderboard)](chapter-4/video-game-leaderboard)
+  - [Windows and Time (Patient Monitoring / Infection detection application)](chapter-5/patient-monitoring)
 
 # Why read this book?
 
