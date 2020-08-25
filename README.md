@@ -12,6 +12,8 @@ The chapter numbers are subject to change. Please find the appropriate tutorial 
   - [Stateless Processing (Sentiment Analysis of Cryptcurreny Tweets) ](chapter-3/crypto-sentiment)
   - [Stateful Processing (Video game leaderboard)](chapter-4/video-game-leaderboard)
   - [Windows and Time (Patient Monitoring / Infection detection application)](chapter-5/patient-monitoring)
+  - [Getting Started with ksqlDB](chapter-8)
+  - [Data Integration with ksqlDB and Kafka Connect](chapter-9)
 
 # Why read this book?
 
