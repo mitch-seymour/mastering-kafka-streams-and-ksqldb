@@ -1,7 +1,7 @@
 # Mastering Kafka Streams and ksqlDB (early release)
 Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour
 
-<a href="https://www.kafka-streams-book.com/"><img src="https://mcusercontent.com/987def4caf0bb040419d778f2/images/3e472381-71aa-4a63-a28b-0d2e245da55e.png" width="300"></a>
+<a href="https://www.kafka-streams-book.com/"><img src="https://mcusercontent.com/987def4caf0bb040419d778f2/images/022e702c-5886-42ed-9104-e13e2d690522.jpg" width="300"></a>
 
 [book]: https://www.kafka-streams-book.com/
 
