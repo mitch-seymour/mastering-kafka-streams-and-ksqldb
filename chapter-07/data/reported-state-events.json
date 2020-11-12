@@ -1,0 +1,4 @@
+1|{"timestamp": "2020-11-23T09:02:00.000Z", "wind_speed_mph": 40, "power": "ON", "type": "REPORTED"}
+1|{"timestamp": "2020-11-23T09:02:00.500Z", "wind_speed_mph": 42, "power": "ON", "type": "REPORTED"}
+1|{"timestamp": "2020-11-23T09:02:01.000Z", "wind_speed_mph": 44, "power": "ON", "type": "REPORTED"}
+1|{"timestamp": "2020-11-23T09:02:01.000Z", "wind_speed_mph": 68, "power": "ON", "type": "REPORTED"}

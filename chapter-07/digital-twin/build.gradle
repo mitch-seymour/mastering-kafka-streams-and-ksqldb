@@ -1,0 +1,98 @@
+plugins {
+  id 'application'
+
+  // https://plugins.gradle.org/plugin/com.github.sherter.google-java-format
+  id 'com.github.sherter.google-java-format' version '0.8'
+
+  // https://plugins.gradle.org/plugin/net.ltgt.errorprone
+  id 'net.ltgt.errorprone' version '0.6.1'
+
+  // used for building the Docker image, which we discuss in Chapter 12
+  id 'com.google.cloud.tools.jib' version '2.1.0'
+}
+
+ext {
+  // https://search.maven.org/artifact/org.apache.kafka/kafka-streams
+  kafkaVersion = '2.6.0'
+}
+
+application {
+  // change this to CombinedApp to run the DSL + Processor API hybrid version
+  mainClassName = 'com.magicalpipelines.ProcessorApp'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
+
+  // logging
+  implementation 'org.slf4j:slf4j-api:1.7.3'
+  implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+  // required for custom serdes
+  implementation 'com.google.code.gson:gson:2.8.5'
+
+  // for loading config from a file. we discuss this briefly in appendix A
+  implementation 'com.typesafe:config:1.3.3'
+
+  // required for interactive queries (server)
+  implementation 'io.javalin:javalin:3.7.0'
+
+  // required for interactive queries (client)
+  implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+
+  errorprone 'com.google.errorprone:error_prone_core:2.3.2'
+  errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
+
+  // test
+  testImplementation "org.apache.kafka:kafka-streams-test-utils:${kafkaVersion}"
+  testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+}
+
+// code formatting
+tasks.withType(JavaCompile).configureEach { javaCompile ->
+  javaCompile.dependsOn 'googleJavaFormat'
+  options.encoding = 'UTF-8'
+  options.errorprone {
+    disableWarningsInGeneratedCode = true
+    excludedPaths = '.*/build/generated/.*'
+  }
+}
+
+task runFirst(type: JavaExec) {
+  main = application.mainClassName
+  classpath = sourceSets.main.runtimeClasspath 
+  systemProperties = [
+    'host': 'localhost',
+    'port': '7000',
+    'stateDir': '/tmp/kafka-streams'
+  ]
+}
+
+run.dependsOn runFirst
+
+// used for building the Docker image, which we discuss in Chapter 12
+jib {
+  to {
+    image = 'gcr.io/kafka-streams-demo/digital-twin:0.1.0'
+  }
+  container {
+    jvmFlags = [
+      '-Xms512m',
+      '-Xdebug'
+    ]
+    mainClass = application.mainClassName
+    ports = ['7000']
+    format = 'OCI'
+  }
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
