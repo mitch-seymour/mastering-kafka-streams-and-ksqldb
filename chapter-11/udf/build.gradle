@@ -1,0 +1,37 @@
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+
+    // Code formatting
+    id 'com.github.sherter.google-java-format' version '0.8'
+}
+
+repositories {
+    jcenter()
+
+    // The ksql-udf dependency, which contains the UDF annotations,
+    // lives in Confluent's Maven repository
+    maven {
+        url = uri('http://packages.confluent.io/maven/')
+    }
+}
+
+dependencies {
+    implementation 'io.confluent.ksql:ksqldb-udf:6.0.0'
+
+    // Use JUnit Jupiter API for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+
+    // Use JUnit Jupiter Engine for testing.
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+}
+
+tasks.withType(JavaCompile).configureEach { javaCompile ->
+  javaCompile.dependsOn 'googleJavaFormat'
+  options.encoding = 'UTF-8'
+}
+
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
