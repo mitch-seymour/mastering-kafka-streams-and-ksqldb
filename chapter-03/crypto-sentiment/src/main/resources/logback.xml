@@ -1,0 +1,15 @@
+<!-- this file goes in src/main/resources/logback.xml -->
+<configuration>
+    <!-- if the system property LOCAL is defined, we'll use a human-friendly log format -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- overriding the default log level per class / package -->
+    <!-- <logger name="com.example" level="INFO" /> -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,0 +1,85 @@
+plugins {
+  id 'application'
+
+  // https://plugins.gradle.org/plugin/com.github.sherter.google-java-format
+  id 'com.github.sherter.google-java-format' version '0.8'
+
+  // https://plugins.gradle.org/plugin/net.ltgt.errorprone
+  id 'net.ltgt.errorprone' version '0.6.1'
+
+  // https://plugins.gradle.org/plugin/com.commercehub.gradle.plugin.avro
+  id 'com.commercehub.gradle.plugin.avro' version '0.9.1'
+}
+
+ext {
+  kafkaVersion = '2.6.0'
+}
+
+application {
+  mainClassName = 'com.magicalpipelines.App'
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+
+  // required for schema-registry-compatible Avro Serdes
+  maven {
+      url "https://packages.confluent.io/maven/"
+  }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+avro {
+  fieldVisibility = 'PRIVATE'
+}
+
+dependencies {
+  implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
+
+  // required for JSON serializer
+  implementation 'com.google.code.gson:gson:2.8.5'
+
+  // required for schema-registry-compatible Avro Serdes
+  implementation 'io.confluent:kafka-streams-avro-serde:6.0.0'
+
+  // required for registryless Avro
+  implementation 'com.mitchseymour:kafka-registryless-avro-serdes:1.0.0'
+
+  // required for sentiment analysis
+  implementation 'com.google.cloud:google-cloud-language:1.67.0'
+
+  // required for language translation
+  implementation 'com.google.cloud:google-cloud-translate:1.94.5'
+  implementation 'com.google.cloud:libraries-bom:3.4.0@pom'
+
+  // logging
+  implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+  // test dependencies
+  testImplementation "org.apache.kafka:kafka-streams-test-utils:${kafkaVersion}"
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+  testImplementation 'org.assertj:assertj-core:3.15.0'
+
+  errorprone 'com.google.errorprone:error_prone_core:2.3.2'
+  errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
+}
+
+// code formatting + error prone
+tasks.withType(JavaCompile).configureEach { javaCompile ->
+  javaCompile.dependsOn 'googleJavaFormat'
+  options.encoding = 'UTF-8'
+  options.errorprone {
+    disableWarningsInGeneratedCode = true
+    excludedPaths = '.*/build/generated/.*'
+  }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
