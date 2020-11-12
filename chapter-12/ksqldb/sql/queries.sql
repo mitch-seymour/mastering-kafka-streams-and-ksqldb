@@ -1,0 +1,15 @@
+
+CREATE STREAM users (
+    ROWKEY INT KEY,
+    USERNAME VARCHAR
+) WITH (
+    KAFKA_TOPIC='users',
+    VALUE_FORMAT='JSON'
+);
+
+CREATE STREAM greetings
+AS SELECT
+    ROWKEY,
+    'Hello, ' + USERNAME AS "greeting"
+FROM users
+EMIT CHANGES;

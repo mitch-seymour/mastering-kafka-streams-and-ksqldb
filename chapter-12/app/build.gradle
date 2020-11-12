@@ -1,0 +1,124 @@
+plugins {
+  id 'application'
+
+  // https://plugins.gradle.org/plugin/com.github.sherter.google-java-format
+  id 'com.github.sherter.google-java-format' version '0.8'
+
+  // used for containerizing the app
+  id 'com.google.cloud.tools.jib' version '2.1.0'
+
+  // for downloading a Prometheus JMX Exporter JAR that can run as a Java agent
+  id 'de.undercouch.download' version '4.1.1'
+
+  // for benchmarking
+  id 'me.champeau.gradle.jmh' version '0.5.2'
+}
+
+ext {
+  kafkaVersion = '2.6.0'
+  opencensusVersion = '0.26.0'
+  simpleclientVersion = '0.6.0'
+  prometheusJmxExporterVersion='0.14.0'
+}
+
+/**
+ * The below task will download the JAR needed for running the Prometheus JMX
+ * exporter as a Java agent. If you prefer to run the exporter as a standalone
+ * HTTP server instead (which allows us to add custom metrics to our Kafka
+ * Streams app, and is what we've implemented in App.java), feel free to delete
+ * this Gradle task.
+ */
+task downloadPrometheusExporter(type: Download) {
+    src "https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${prometheusJmxExporterVersion}/jmx_prometheus_javaagent-${prometheusJmxExporterVersion}.jar"
+    dest new File('files', 'jmx_prometheus_javaagent.jar')
+}
+
+jib {
+  to {
+    image = 'magicalpipelines/myapp:0.1.0'
+  }
+  extraDirectories.paths = ['files']
+  container {
+    jvmFlags = [
+      /** 
+       * The port we expose JMX metrics on should match the port in the JMX
+       * url that is defined in jmx_prometheus_exporter.yaml
+       */
+      '-Dcom.sun.management.jmxremote.port=5555',
+      '-Dcom.sun.management.jmxremote.local.only=true',
+      '-Dcom.sun.management.jmxremote.authenticate=false',
+      '-Dcom.sun.management.jmxremote.ssl=false',
+      /**
+       * Uncomment the line below to run the Prometheus JMX exporter as a
+       * Java agent. Agent mode is suitable if you don't have any custom
+       * metrics that you want to instrument in your Kafka Streams app.
+       */
+      //'-javaagent:./jmx_prometheus_javaagent.jar=8080:jmx_prometheus_exporter.yaml',
+    ]
+    mainClass = application.mainClassName
+    ports = ['8080', '9010']
+    labels = [key1:'value1', key2:'value2']
+    format = 'OCI'
+  }
+}
+
+tasks.build.dependsOn tasks.jibDockerBuild
+tasks.jibDockerBuild.dependsOn  tasks.downloadPrometheusExporter
+
+application {
+  // run the DSL example by default
+  mainClassName = 'com.magicalpipelines.App'
+}
+
+repositories {
+  mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+  implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
+  implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+  // configuration
+  implementation "com.typesafe:config:1.4.0"
+
+  // observability dependencies
+  implementation "io.prometheus.jmx:jmx_prometheus_httpserver:${prometheusJmxExporterVersion}"
+  implementation "io.opencensus:opencensus-api:${opencensusVersion}"
+  implementation "io.opencensus:opencensus-impl:${opencensusVersion}"
+  implementation "io.opencensus:opencensus-exporter-stats-prometheus:${opencensusVersion}"
+
+  // test dependencies
+  testImplementation "org.apache.kafka:kafka-streams-test-utils:${kafkaVersion}"
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+  testImplementation 'org.assertj:assertj-core:3.15.0'
+}
+
+// code formatting
+tasks.withType(JavaCompile).configureEach { javaCompile ->
+  javaCompile.dependsOn 'googleJavaFormat'
+  options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+// for benchmarking
+jmh {
+  iterations = 4
+  benchmarkMode = ['thrpt']
+  threads = 1
+  fork = 1
+  timeOnIteration = '3s'
+  resultFormat = 'TEXT'
+  profilers = []
+
+  warmupIterations = 3
+  warmup = '1s'
+}
