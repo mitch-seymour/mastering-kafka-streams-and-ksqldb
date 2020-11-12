@@ -1,0 +1,9 @@
+.classpath
+.gradle/
+.project
+.settings/
+build/
+bin/
+.DS_Store
+.vscode
+

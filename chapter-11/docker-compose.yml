@@ -1,0 +1,77 @@
+---
+version: '3'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.0.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:6.0.0
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:6.0.0
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+  
+  ksqldb-server:
+    image: confluentinc/ksqldb-server:0.12.0
+    hostname: ksqldb-server
+    container_name: ksqldb-server
+    command: ["ksql-server-start", "/etc/ksqldb-server/server.properties"]
+    depends_on:
+      - kafka
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+    volumes:
+    - ./files/ksqldb-server:/etc/ksqldb-server
+    - ./udf/build/libs:/etc/ksqldb/extensions
+
+  # without custom configs
+  # docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088
+  #
+  # with custom configs
+  # docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088 --config-file /etc/ksqldb-cli/cli.properties
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:0.12.0
+    container_name: ksqldb-cli
+    command: ["ksql", "http://ksqldb-server:8088", "--config-file", "/etc/ksqldb-cli/cli.properties"]
+    depends_on:
+      - kafka
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
+    volumes:
+    - ./files/ksqldb-cli:/etc/ksqldb-cli
+    - ./files/sql:/etc/sql

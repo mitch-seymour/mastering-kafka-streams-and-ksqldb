@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -xeuo pipefail
+
+NAMESPACE=default
+KAFKA_POD=$(kubectl get pods -n $NAMESPACE -l app=kafka -o jsonpath="{.items[0].metadata.name}")
+GRAFANA_POD=$(kubectl get pods -n $NAMESPACE -l app=grafana -o jsonpath="{.items[0].metadata.name}")
+PROMETHEUS_POD=$(kubectl get pods -n $NAMESPACE -l app=prometheus -o jsonpath="{.items[0].metadata.name}")
+
+kubectl -n "$NAMESPACE" port-forward "$KAFKA_POD" 29092:29092 2>&1 > /dev/null &
+kubectl -n "$NAMESPACE" port-forward "$GRAFANA_POD" 3000:3000 2>&1 > /dev/null &
+kubectl -n "$NAMESPACE" port-forward "$PROMETHEUS_POD" 9090:9090 2>&1 > /dev/null &
+

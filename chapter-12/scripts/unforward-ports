@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -xeuo pipefail
+
+if pkill -f "port-forward"; then
+  echo "Kafka/Grafana/Prometheus port-forward stopped."
+else
+  echo "Failed to stop: port-forward processes not found."
+  exit 1
+fi
