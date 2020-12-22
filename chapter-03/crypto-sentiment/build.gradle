@@ -46,6 +46,7 @@ dependencies {
   implementation 'io.confluent:kafka-streams-avro-serde:6.0.0'
 
   // required for registryless Avro
+  implementation 'org.apache.avro:avro:1.8.2'
   implementation 'com.mitchseymour:kafka-registryless-avro-serdes:1.0.0'
 
   // required for sentiment analysis
