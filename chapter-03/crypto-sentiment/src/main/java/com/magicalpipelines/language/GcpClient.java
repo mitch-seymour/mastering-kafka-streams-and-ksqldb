@@ -75,6 +75,7 @@ public class GcpClient implements LanguageClient {
         EntitySentiment entitySentiment =
             EntitySentiment.newBuilder()
                 .setCreatedAt(tweet.getCreatedAt())
+                .setId(tweet.getId())
                 .setEntity(entity.getName().replace("#", "").toLowerCase())
                 .setText(tweet.getText())
                 .setSalience((double) entity.getSalience())
