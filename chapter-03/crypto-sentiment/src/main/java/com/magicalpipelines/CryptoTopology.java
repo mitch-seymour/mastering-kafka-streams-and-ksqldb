@@ -59,6 +59,7 @@ class CryptoTopology {
     // if we always expect our keys to be null
     KStream<byte[], Tweet> stream =
         builder.stream("tweets", Consumed.with(Serdes.ByteArray(), new TweetSerdes()));
+    stream.print(Printed.<byte[], Tweet>toSysOut().withLabel("tweets-stream"));
 
     // filter out retweets
     KStream<byte[], Tweet> filtered =
