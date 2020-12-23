@@ -40,7 +40,9 @@ class PatientMonitoringTopology {
         Consumed.with(Serdes.String(), JsonSerdes.Pulse())
             .withTimestampExtractor(new VitalTimestampExtractor());
 
-    KStream<String, Pulse> pulseEvents = builder.stream("pulse-events", pulseConsumerOptions);
+    KStream<String, Pulse> pulseEvents =
+        // register the pulse-events stream
+        builder.stream("pulse-events", pulseConsumerOptions);
 
     // 1.2
     Consumed<String, BodyTemp> bodyTempConsumerOptions =
@@ -48,6 +50,7 @@ class PatientMonitoringTopology {
             .withTimestampExtractor(new VitalTimestampExtractor());
 
     KStream<String, BodyTemp> tempEvents =
+        // register the body-temp-events stream
         builder.stream("body-temp-events", bodyTempConsumerOptions);
 
     // turn pulse into a rate (bpm)
@@ -70,6 +73,9 @@ class PatientMonitoringTopology {
     KStream<String, Long> highPulse =
         pulseCounts
             .toStream()
+            // this peek operator is not included in the book, but was added
+            // to this code example so you could view some additional information
+            // when running the application locally :)
             .peek(
                 (key, value) -> {
                   String id = new String(key.key());
