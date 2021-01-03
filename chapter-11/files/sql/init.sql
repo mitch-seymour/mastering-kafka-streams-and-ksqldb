@@ -42,6 +42,9 @@ FROM production_changes
 WHERE change_type = 'season_length'
 EMIT CHANGES ;
 
+INSERT INTO titles VALUES (1, 'Stranger Things');
+INSERT INTO titles VALUES (2, 'Black Mirror');
+INSERT INTO titles VALUES (3, 'Bojack Horseman');
 
 INSERT INTO production_changes (
     uuid,
@@ -58,25 +61,3 @@ INSERT INTO production_changes (
     STRUCT(season_id := 1, episode_count := 8),
     '2021-02-08 10:00:00'
 );
-
-INSERT INTO production_changes (
-    ROWKEY,
-    uuid,
-    title_id,
-    change_type,
-    before,
-    after,
-    created_at
-) VALUES (
-    '2',
-    2,
-    2,
-    'release_date',
-    STRUCT(season_id := 1, release_date := '2021-05-27'),
-    STRUCT(season_id := 1, release_date := '2021-08-18'),
-    '2021-02-08 10:00:00'
-);
-
-INSERT INTO titles VALUES (1, 'Stranger Things');
-INSERT INTO titles VALUES (2, 'Black Mirror');
-INSERT INTO titles VALUES (3, 'Bojack Horseman');
