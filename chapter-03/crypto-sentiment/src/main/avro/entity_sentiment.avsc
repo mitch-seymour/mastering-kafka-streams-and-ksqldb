@@ -8,6 +8,10 @@
         "type": "long"
       },
       {
+        "name": "id",
+        "type": "long"
+      },
+      {
         "name": "entity",
         "type": "string"
       },

@@ -1,6 +1,21 @@
 {
   "outputs": [
-    {"topic": "greetings", "timestamp": 0, "value": {"greeting": "Hello, Isabelle"}, "key": 0},
-    {"topic": "greetings", "timestamp": 0, "value": {"greeting": "Hello, Elyse"}, "key": 0}
+    {
+      "topic": "greetings",
+      "timestamp": 0,
+      "value": {
+        "greeting": "Hello, Isabelle"
+      },
+      "key": 0
+    },
+    {
+      "topic": "greetings",
+      "timestamp": 0,
+      "value": {
+        "greeting": "Hello, Elyse"
+      },
+      "key": 0
+    }
   ]
 }
+

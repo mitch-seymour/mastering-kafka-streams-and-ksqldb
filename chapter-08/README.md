@@ -38,7 +38,7 @@ docker-compose exec kafka kafka-topics \
 Once that is done, log into the ksqlDB CLI using the following command:
 
 ```sh
-$ docker-compose exec ksqldb-cli  ksql http://ksqldb-server:8088
+$ docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088
 ```
 
 If you see a `Could not connect to the server` error in the CLI, wait a few seconds and try again. ksqlDB can take several seconds to start.

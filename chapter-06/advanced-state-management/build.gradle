@@ -10,17 +10,18 @@ plugins {
 
 ext {
   // https://search.maven.org/artifact/org.apache.kafka/kafka-streams
-  kafkaVersion = '2.6.0'
+  kafkaVersion = '2.7.0'
 }
 
 application {
-  mainClassName = 'com.magicalpipelines.App'
+  mainClassName = 'com.magicalpipelines.TombstoneExample'
 }
 
 repositories {
-  mavenLocal()
   mavenCentral()
 }
+
+
 
 dependencies {
   implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
@@ -29,17 +30,8 @@ dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.3'
   implementation 'ch.qos.logback:logback-classic:1.2.3'
 
-  // required for custom serdes
-  implementation 'com.google.code.gson:gson:2.8.5'
-
-  // required for interactive queries (server)
-  implementation 'io.javalin:javalin:3.12.0'
-  // required for interactive queries (client)
-  implementation 'com.squareup.okhttp3:okhttp:4.9.0'
-
   errorprone 'com.google.errorprone:error_prone_core:2.3.2'
   errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
-
 }
 
 tasks.withType(JavaCompile).configureEach { javaCompile ->
@@ -51,31 +43,17 @@ tasks.withType(JavaCompile).configureEach { javaCompile ->
   }
 }
 
-task runFirst(type: JavaExec) {
-  main = application.mainClassName
-  classpath = sourceSets.main.runtimeClasspath 
-  systemProperties = [
-    'host': 'localhost',
-    'port': '7000',
-    'stateDir': '/tmp/kafka-streams'
-  ]
+task runLruFixedSizedStoreExample(type: JavaExec) {
+  main = 'com.magicalpipelines.LruFixedSizedStoreExample'
+  classpath = sourceSets.main.runtimeClasspath
 }
 
-task runSecond(type: JavaExec) {
-  main = application.mainClassName
-  classpath = sourceSets.main.runtimeClasspath 
-  systemProperties = [
-    'host': 'localhost',
-    'port': '7100',
-    'stateDir': '/tmp/kafka-streams2'
-  ]
+task runTombstoneExample(type: JavaExec) {
+  main = 'com.magicalpipelines.TombstoneExample'
+  classpath = sourceSets.main.runtimeClasspath
 }
 
-run.dependsOn runFirst
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+task runTopicConfigsExample(type: JavaExec) {
+  main = 'com.magicalpipelines.TopicConfigsExample'
+  classpath = sourceSets.main.runtimeClasspath
 }

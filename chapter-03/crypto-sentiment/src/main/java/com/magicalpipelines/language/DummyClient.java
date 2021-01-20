@@ -23,6 +23,7 @@ public class DummyClient implements LanguageClient {
       EntitySentiment entitySentiment =
           EntitySentiment.newBuilder()
               .setCreatedAt(tweet.getCreatedAt())
+              .setId(tweet.getId())
               .setEntity(entity)
               .setText(tweet.getText())
               .setSalience(randomDouble())

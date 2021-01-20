@@ -1,6 +1,20 @@
 {
   "inputs": [
-    {"topic": "users", "timestamp": 0, "value": {"USERNAME": "Isabelle"}, "key": 0},
-    {"topic": "users", "timestamp": 0, "value": {"USERNAME": "Elyse"}, "key": 0}
+    {
+      "topic": "users",
+      "timestamp": 0,
+      "value": {
+        "USERNAME": "Isabelle"
+      },
+      "key": 0
+    },
+    {
+      "topic": "users",
+      "timestamp": 0,
+      "value": {
+        "USERNAME": "Elyse"
+      },
+      "key": 0
+    }
   ]
 }

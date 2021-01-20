@@ -2,8 +2,7 @@
 CREATE TYPE season_length AS STRUCT<season_id INT, episode_count INT> ;
 
 CREATE TABLE titles (
-    rowkey INT PRIMARY KEY,
-    id INT,
+    id INT PRIMARY KEY,
     title VARCHAR
 ) WITH (
     KAFKA_TOPIC='titles',
@@ -46,43 +45,44 @@ FROM production_changes
 WHERE change_type = 'season_length'
 EMIT CHANGES ;
 
-INSERT INTO production_changes (
-    uuid,
-    title_id,
-    change_type,
-    before,
-    after,
-    created_at
-) VALUES (
-    1,
-    1,
-    'season_length',
+INSERT INTO titles VALUES (1, 'Stranger Things');
+INSERT INTO titles VALUES (2, 'Black Mirror');
+INSERT INTO titles VALUES (3, 'Bojack Horseman');
+
+INSERT INTO production_changes VALUES (
+    '1', 1, 1, 'season_length',
     STRUCT(season_id := 1, episode_count := 12),
     STRUCT(season_id := 1, episode_count := 8),
-    '2020-10-31 10:00:00'
+    '2021-02-24 10:00:00'
 );
 
-INSERT INTO production_changes (
-    ROWKEY,
-    uuid,
-    title_id,
-    change_type,
-    before,
-    after,
-    created_at
-) VALUES (
-    '2',
-    2,
-    2,
-    'release_date',
-    STRUCT(season_id := 1, release_date := '2020-11-01'),
-    STRUCT(season_id := 1, release_date := '2020-12-15'),
-    '2020-10-31 10:00:00'
+INSERT INTO production_changes VALUES (
+    '1', 1, 1, 'season_length',
+    STRUCT(season_id := 1, episode_count := 8),
+    STRUCT(season_id := 1, episode_count := 10),
+    '2021-02-24 11:00:00'
 );
 
-INSERT INTO titles VALUES (1, 1, 'Stranger Things');
-INSERT INTO titles VALUES (2, 2, 'Black Mirror');
-INSERT INTO titles VALUES (3, 3, 'Bojack Horseman');
+INSERT INTO production_changes VALUES (
+    '1', 1, 1, 'season_length',
+    STRUCT(season_id := 1, episode_count := 10),
+    STRUCT(season_id := 1, episode_count := 8),
+    '2021-02-24 10:59:00'
+);
+
+INSERT INTO production_changes VALUES (
+    '1', 1, 1, 'season_length',
+    STRUCT(season_id := 1, episode_count := 8),
+    STRUCT(season_id := 1, episode_count := 12),
+    '2021-02-24 11:10:00'
+);
+
+INSERT INTO production_changes VALUES (
+    '1', 1, 1, 'season_length',
+    STRUCT(season_id := 1, episode_count := 12),
+    STRUCT(season_id := 1, episode_count := 8),
+    '2021-02-24 10:59:00'
+);
 
 /** This is where Chapter 11 starts **/
 CREATE STREAM season_length_changes_enriched
@@ -124,38 +124,3 @@ WINDOW TUMBLING (
 )
 GROUP BY title_id, season_id
 EMIT CHANGES ;
-
-INSERT INTO production_changes VALUES (
-    '1', 1, 1, 'season_length',
-    STRUCT(season_id := 1, episode_count := 12),
-    STRUCT(season_id := 1, episode_count := 8),
-    '2020-12-24 10:00:00'
-);
-
-INSERT INTO production_changes VALUES (
-    '1', 1, 1, 'season_length',
-    STRUCT(season_id := 1, episode_count := 8),
-    STRUCT(season_id := 1, episode_count := 10),
-    '2020-12-24 11:00:00'
-);
-
-INSERT INTO production_changes VALUES (
-    '1', 1, 1, 'season_length',
-    STRUCT(season_id := 1, episode_count := 10),
-    STRUCT(season_id := 1, episode_count := 8),
-    '2020-12-24 10:59:00'
-);
-
-INSERT INTO production_changes VALUES (
-    '1', 1, 1, 'season_length',
-    STRUCT(season_id := 1, episode_count := 8),
-    STRUCT(season_id := 1, episode_count := 12),
-    '2020-12-24 11:10:00'
-);
-
-INSERT INTO production_changes VALUES (
-    '1', 1, 1, 'season_length',
-    STRUCT(season_id := 1, episode_count := 12),
-    STRUCT(season_id := 1, episode_count := 8),
-    '2020-12-24 10:59:00'
-);
