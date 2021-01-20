@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KafkaStreams.State;
-import org.apache.kafka.streams.KeyQueryMetadata;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 
@@ -34,12 +33,6 @@ class App {
 
     // state restore listener example
     streams.setGlobalStateRestoreListener(new MyRestoreListener());
-
-    KeyQueryMetadata metadata =
-        streams.queryMetadataForKey("R", "key", Serdes.String().serializer());
-    String remoteHost = metadata.getActiveHost().host();
-    int remotePort = metadata.getActiveHost().port();
-    metadata.getStandbyHosts();
 
     // close Kafka Streams when the JVM shuts down (e.g. SIGTERM)
     Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
