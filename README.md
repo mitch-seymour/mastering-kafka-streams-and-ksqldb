@@ -7,11 +7,12 @@ Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksq
 
 
 # Chapter Tutorials
-
+  - [Chapter 1](chapter-01) - _A Rapid Introduction to Kafka_
   - [Chapter 2](chapter-02) - _Getting Started with Kafka Streams_
   - [Chapter 3](chapter-03) - _Stateless Processing (Sentiment Analysis of Cryptcurreny Tweets)_
   - [Chapter 4](chapter-04) - _Stateful Processing (Video game leaderboard)_
   - [Chapter 5](chapter-05) - _Windows and Time (Patient Monitoring / Infection detection application)_
+  - [Chapter 6](chapter-06) - _Advanced State Management_
   - [Chapter 7](chapter-07) - _Processor API (Digital Twin / IoT application)_
   - [Chapter 8](chapter-08) - _Getting Started with ksqlDB_
   - [Chapter 9](chapter-09) - _Data Integration with ksqlDB and Kafka Connect_
