@@ -32,12 +32,17 @@ class ProcessorApp {
 
     KafkaStreams streams = new KafkaStreams(topology, props);
 
-    log.info("Starting Digital Twin Streams App");
+    // clean up local state since many of the tutorials write to the same location
+    // you should run this sparingly in production since it will force the state
+    // store to be rebuilt on start up
+    streams.cleanUp();
 
+    log.info("Starting Digital Twin Streams App");
     streams.start();
     // close Kafka Streams when the JVM shuts down (e.g. SIGTERM)
     Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
 
+    @SuppressWarnings("StringSplitter")
     String[] endpointParts = config.getString(StreamsConfig.APPLICATION_SERVER_CONFIG).split(":");
     HostInfo hostInfo = new HostInfo(endpointParts[0], Integer.parseInt(endpointParts[1]));
     RestService service = new RestService(hostInfo, streams);
