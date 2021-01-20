@@ -92,8 +92,8 @@ dependencies {
 
   // test dependencies
   testImplementation "org.apache.kafka:kafka-streams-test-utils:${kafkaVersion}"
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
   testImplementation 'org.assertj:assertj-core:3.15.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
 }
 
 // code formatting
