@@ -9,6 +9,17 @@ This code corresponds with Chapter 11 in the upcoming O'Reilly book: [Mastering 
 
 [book]: https://www.kafka-streams-book.com/
 
+# Building the Custom ksqlDB Functions
+Before you start the ksqlDB server (see the _Running Locally_ section later in this README), you should first build any of the custom functions you want to experiment with so that the UDF JARs can be mounted into the ksqlDB server container (which is defined in the _docker-compose.yml_ file). The following custom ksqlDB functions are currently included in our examples:
+
+## Custom UDF (remove_stop_words)
+The custom function in the [udf/](udf/) directory is what we built in Chapter 11. It's purpose is to remove stop words from a string of text. To build this UDF, run the following commands:
+
+```sh
+$ cd udf/
+$ ./gradlew build --info
+```
+
 # Running Locally
 We're deploying the following components with Docker compose:
 
@@ -59,7 +70,6 @@ Now, you can run each of the queries mentioned in the book from the CLI. Also, t
 
 - [files/sql/all.sql](files/sql/all.sql)
 
-Note, the udf can be found in the [udf/](udf/) directory.
 
 Once you're finished, tear everything down using the following command:
 
