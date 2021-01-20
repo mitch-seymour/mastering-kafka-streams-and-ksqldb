@@ -47,6 +47,7 @@ test {
 // code formatting
 tasks.withType(JavaCompile).configureEach { javaCompile ->
   javaCompile.dependsOn 'googleJavaFormat'
+  options.compilerArgs << "-Xlint:deprecation"
   options.encoding = 'UTF-8'
 }
 

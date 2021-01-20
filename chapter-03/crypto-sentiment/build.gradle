@@ -75,6 +75,7 @@ dependencies {
 // code formatting + error prone
 tasks.withType(JavaCompile).configureEach { javaCompile ->
   javaCompile.dependsOn 'googleJavaFormat'
+  options.compilerArgs << "-Xlint:deprecation"
   options.encoding = 'UTF-8'
   options.errorprone {
     disableWarningsInGeneratedCode = true
