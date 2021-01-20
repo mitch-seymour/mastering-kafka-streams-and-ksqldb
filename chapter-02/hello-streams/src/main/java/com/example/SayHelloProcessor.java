@@ -1,17 +1,18 @@
 package com.example;
 
-import org.apache.kafka.streams.processor.Processor;
-import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.processor.api.Processor;
+import org.apache.kafka.streams.processor.api.ProcessorContext;
+import org.apache.kafka.streams.processor.api.Record;
 
-public class SayHelloProcessor implements Processor<Void, String> {
+public class SayHelloProcessor implements Processor<Void, String, Void, Void> {
   @Override
-  public void init(ProcessorContext context) {
+  public void init(ProcessorContext<Void, Void> context) {
     // no special initialization needed in this example
   }
 
   @Override
-  public void process(Void key, String value) {
-    System.out.println("(Processor API) Hello, " + value);
+  public void process(Record<Void, String> record) {
+    System.out.println("(Processor API) Hello, " + record.value());
   }
 
   @Override
