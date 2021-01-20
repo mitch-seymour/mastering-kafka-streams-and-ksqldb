@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 
@@ -34,7 +35,7 @@ public class JsonDeserializer<T> implements Deserializer<T> {
       return null;
     }
     Type type = destinationClass != null ? destinationClass : reflectionTypeToken;
-    return gson.fromJson(new String(bytes), type);
+    return gson.fromJson(new String(bytes, StandardCharsets.UTF_8), type);
   }
 
   @Override
