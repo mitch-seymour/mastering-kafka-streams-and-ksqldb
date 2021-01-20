@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.kstream.Window;
 import org.apache.kafka.streams.kstream.Windowed;
 import org.apache.kafka.streams.state.HostInfo;
@@ -33,11 +34,13 @@ class RestService {
   }
 
   ReadOnlyWindowStore<String, Long> getBpmStore() {
-    return streams.store("pulse-counts", QueryableStoreTypes.windowStore());
+    return streams.store(
+        StoreQueryParameters.fromNameAndType("pulse-counts", QueryableStoreTypes.windowStore()));
   }
 
   ReadOnlyKeyValueStore<String, CombinedVitals> getAlertsStore() {
-    return streams.store("alerts", QueryableStoreTypes.keyValueStore());
+    return streams.store(
+        StoreQueryParameters.fromNameAndType("alerts", QueryableStoreTypes.keyValueStore()));
   }
 
   void start() {

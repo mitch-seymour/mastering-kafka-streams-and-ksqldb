@@ -57,6 +57,21 @@ class PatientMonitoringTopology {
     TimeWindows tumblingWindow =
         TimeWindows.of(Duration.ofSeconds(60)).grace(Duration.ofSeconds(5));
 
+    /*!
+     * Examples of other windows (not needed for the tutorial) are commented
+     * out below
+     *
+     * TimeWindows hoppingWindow =
+     *     TimeWindows.of(Duration.ofSeconds(5)).advanceBy(Duration.ofSeconds(4));
+     *
+     * SessionWindows sessionWindow = SessionWindows.with(Duration.ofSeconds(5));
+     *
+     * JoinWindows joinWindow = JoinWindows.of(Duration.ofSeconds(5));
+     *
+     * SlidingWindows slidingWindow =
+     *     SlidingWindows.withTimeDifferenceAndGrace(Duration.ofSeconds(5), Duration.ofSeconds(0));
+     */
+
     KTable<Windowed<String>, Long> pulseCounts =
         pulseEvents
             // 2
