@@ -17,7 +17,9 @@ import java.util.stream.Stream;
 public class RemoveStopWordsUdf {
 
   private final List<String> stopWords =
-      Arrays.asList(new String[] {"a", "and", "are", "but", "or", "over", "the"});
+      Arrays.asList(
+          // ...
+          new String[] {"a", "and", "are", "but", "or", "over", "the"});
 
   private ArrayList<String> stringToWords(String source) {
     return Stream.of(source.toLowerCase().split(" "))
@@ -30,8 +32,7 @@ public class RemoveStopWordsUdf {
 
   @Udf(description = "Remove the default stop words from a string of text")
   public String apply(
-      @UdfParameter(value = "source", description = "the source string to remove stop words from")
-          final String source) {
+      @UdfParameter(value = "source", description = "the raw source string") final String source) {
     ArrayList<String> words = stringToWords(source);
     words.removeAll(stopWords);
     return wordsToString(words);
