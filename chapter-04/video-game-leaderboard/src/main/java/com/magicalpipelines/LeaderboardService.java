@@ -143,7 +143,7 @@ class LeaderboardService {
         streams.queryMetadataForKey("leader-boards", productId, Serdes.String().serializer());
 
     // the local instance has this key
-    if (hostInfo.equals(metadata.getActiveHost())) {
+    if (hostInfo.equals(metadata.activeHost())) {
       log.info("Querying local store for key");
       HighScores highScores = getStore().get(productId);
 
@@ -159,8 +159,8 @@ class LeaderboardService {
     }
 
     // a remote instance has the key
-    String remoteHost = metadata.getActiveHost().host();
-    int remotePort = metadata.getActiveHost().port();
+    String remoteHost = metadata.activeHost().host();
+    int remotePort = metadata.activeHost().port();
     String url =
         String.format(
             "http://%s:%d/leaderboard/%s",

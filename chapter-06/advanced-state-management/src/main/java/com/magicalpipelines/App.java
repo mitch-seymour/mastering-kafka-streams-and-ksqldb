@@ -37,7 +37,7 @@ class App {
     // close Kafka Streams when the JVM shuts down (e.g. SIGTERM)
     Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
 
-    // clean up local state since many of the tutorials right to the same location
+    // clean up local state since many of the tutorials write to the same location
     // you should run this sparingly in production since it will force the state
     // store to be rebuilt on start up
     streams.cleanUp();

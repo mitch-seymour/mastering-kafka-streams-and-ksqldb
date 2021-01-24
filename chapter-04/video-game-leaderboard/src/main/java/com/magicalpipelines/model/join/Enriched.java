@@ -17,6 +17,7 @@ public class Enriched implements Comparable<Enriched> {
     this.score = scoreEventWithPlayer.getScoreEvent().getScore();
   }
 
+  @Override
   public int compareTo(Enriched o) {
     return Double.compare(o.score, score);
   }

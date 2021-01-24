@@ -7,24 +7,25 @@ import java.time.Duration;
 import java.time.Instant;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.Cancellable;
-import org.apache.kafka.streams.processor.Processor;
-import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.PunctuationType;
+import org.apache.kafka.streams.processor.api.Processor;
+import org.apache.kafka.streams.processor.api.ProcessorContext;
+import org.apache.kafka.streams.processor.api.Record;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DigitalTwinProcessor implements Processor<String, TurbineState> {
+public class DigitalTwinProcessor implements Processor<String, TurbineState, String, DigitalTwin> {
   private static final Logger log = LoggerFactory.getLogger(DigitalTwinProcessor.class);
 
-  private ProcessorContext context;
+  private ProcessorContext<String, DigitalTwin> context;
   private KeyValueStore<String, DigitalTwin> kvStore;
   private Cancellable punctuator;
 
   @Override
   @SuppressWarnings("unchecked")
-  public void init(ProcessorContext context) {
+  public void init(ProcessorContext<String, DigitalTwin> context) {
     // keep the processor context locally because we need it in punctuate() and commit()
     this.context = context;
 
@@ -59,8 +60,9 @@ public class DigitalTwinProcessor implements Processor<String, TurbineState> {
   }
 
   @Override
-  public void process(String key, TurbineState value) {
-    // save the key to our alerts store, which we'll iterate over on a periodic basis and process
+  public void process(Record<String, TurbineState> record) {
+    String key = record.key();
+    TurbineState value = record.value();
     System.out.println("Processing: " + value);
 
     if (value.getType() == null) {
@@ -84,7 +86,9 @@ public class DigitalTwinProcessor implements Processor<String, TurbineState> {
     kvStore.put(key, digitalTwin);
 
     // forward to downstream processors
-    context.forward(key, digitalTwin);
+    Record<String, DigitalTwin> newRecord =
+        new Record<>(record.key(), digitalTwin, record.timestamp());
+    context.forward(newRecord);
 
     // lesson: note that calling commit here would lead to low throughput, because commit
     // is an expensive operation (it flushes the state store)

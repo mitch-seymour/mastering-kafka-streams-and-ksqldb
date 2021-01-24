@@ -10,7 +10,7 @@ plugins {
 
 ext {
   // https://search.maven.org/artifact/org.apache.kafka/kafka-streams
-  kafkaVersion = '2.6.0'
+  kafkaVersion = '2.7.0'
 }
 
 application {
@@ -46,6 +46,7 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach { javaCompile ->
   javaCompile.dependsOn 'googleJavaFormat'
+  options.compilerArgs << "-Xlint:deprecation"
   options.encoding = 'UTF-8'
   options.errorprone {
     disableWarningsInGeneratedCode = true

@@ -8,10 +8,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyQueryMetadata;
+import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.HostInfo;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.apache.kafka.streams.state.StreamsMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,9 @@ class RestService {
   }
 
   ReadOnlyKeyValueStore<String, DigitalTwin> getStore() {
-    return streams.store("digital-twin-store", QueryableStoreTypes.keyValueStore());
+    return streams.store(
+        StoreQueryParameters.fromNameAndType(
+            "digital-twin-store", QueryableStoreTypes.keyValueStore()));
   }
 
   void start() {
@@ -39,11 +42,12 @@ class RestService {
     String deviceId = ctx.pathParam("id");
 
     // find out which host has the key
-    StreamsMetadata metadata =
-        streams.metadataForKey("digital-twin-store", deviceId, Serdes.String().serializer());
+    KeyQueryMetadata metadata =
+        streams.queryMetadataForKey("digital-twin-store", deviceId, Serdes.String().serializer());
+    HostInfo activeHost = metadata.activeHost();
 
     // the local instance has this key
-    if (hostInfo.equals(metadata.hostInfo())) {
+    if (hostInfo.equals(activeHost)) {
       log.info("Querying local store for key");
       DigitalTwin latestState = getStore().get(deviceId);
 
@@ -60,7 +64,7 @@ class RestService {
 
     // a remote instance has the key
     String url =
-        String.format("http://%s:%s/devices/%s", metadata.host(), metadata.port(), deviceId);
+        String.format("http://%s:%s/devices/%s", activeHost.host(), activeHost.port(), deviceId);
     OkHttpClient client = new OkHttpClient();
     Request request = new Request.Builder().url(url).build();
 

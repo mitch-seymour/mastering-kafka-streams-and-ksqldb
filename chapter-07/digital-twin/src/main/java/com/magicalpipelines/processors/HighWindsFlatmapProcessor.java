@@ -3,26 +3,29 @@ package com.magicalpipelines.processors;
 import com.magicalpipelines.model.TurbineState;
 import com.magicalpipelines.model.TurbineState.Power;
 import com.magicalpipelines.model.TurbineState.Type;
-import org.apache.kafka.streams.processor.Processor;
-import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.processor.api.Processor;
+import org.apache.kafka.streams.processor.api.ProcessorContext;
+import org.apache.kafka.streams.processor.api.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HighWindsFlatmapProcessor implements Processor<String, TurbineState> {
+public class HighWindsFlatmapProcessor
+    implements Processor<String, TurbineState, String, TurbineState> {
   private static final Logger log = LoggerFactory.getLogger(HighWindsFlatmapProcessor.class);
 
-  private ProcessorContext context;
+  private ProcessorContext<String, TurbineState> context;
 
   @Override
-  public void init(ProcessorContext context) {
+  public void init(ProcessorContext<String, TurbineState> context) {
     // keep the processor context locally because we need it in punctuate() and commit()
     this.context = context;
   }
 
   @Override
-  public void process(String key, TurbineState reported) {
+  public void process(Record<String, TurbineState> record) {
+    TurbineState reported = record.value();
     // always forward the original, reported state
-    context.forward(key, reported);
+    context.forward(record);
 
     // also forward a new desired, shutdown state if the wind speeds are too high
     if (reported.getWindSpeedMph() > 65 && reported.getPower() == Power.ON) {
@@ -31,12 +34,14 @@ public class HighWindsFlatmapProcessor implements Processor<String, TurbineState
       desired.setPower(Power.OFF);
       desired.setType(Type.DESIRED);
       // forward the record to all downstream processors
-      context.forward(key, desired);
+      Record<String, TurbineState> newRecord =
+          new Record<>(record.key(), desired, record.timestamp());
+      context.forward(newRecord);
 
       // if you wanted to forward to a specific downstream processor,
-      // you could use to org.apache.kafka.streams.processor.To, as
-      // shown below
-      // context.forward(key, desired, To.child("some-child-node"));
+      // e.g. a processor named "some-child-node", you could use the
+      // following code instead
+      // context.forward(newRecord, "some-child-node");
     }
   }
 
