@@ -18,8 +18,6 @@ We're deploying the following components with Docker compose:
 - ksqlDB server (with Kafka Connect running in embedded mode)
 - ksqlDB CLI
 - Schema Registry
-- Postgres
-- Elasticsearch
 
 
 Feel free to checkout the following config files:
@@ -50,6 +48,12 @@ If you see a `Could not connect to the server` error in the CLI, wait a few seco
 Now, you can run each of the queries mentioned in the book from the CLI. Also, the entire set of queries needed for this chapter have been saved to the following file:
 
 - [files/sql/all.sql](files/sql/all.sql)
+
+If you'd like to run all of the queries in the above file, simply execute the following statement from the CLI:
+
+```
+ksql> RUN SCRIPT '/etc/sql/all.sql';
+```
 
 Once you're finished, tear everything down using the following command:
 
