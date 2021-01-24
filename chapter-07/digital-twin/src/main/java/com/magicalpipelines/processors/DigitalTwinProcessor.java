@@ -86,7 +86,8 @@ public class DigitalTwinProcessor implements Processor<String, TurbineState, Str
     kvStore.put(key, digitalTwin);
 
     // forward to downstream processors
-    Record<String, DigitalTwin> newRecord = new Record<>(key, digitalTwin, record.timestamp());
+    Record<String, DigitalTwin> newRecord =
+        new Record<>(record.key(), digitalTwin, record.timestamp());
     context.forward(newRecord);
 
     // lesson: note that calling commit here would lead to low throughput, because commit
