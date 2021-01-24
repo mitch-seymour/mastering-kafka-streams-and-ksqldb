@@ -40,7 +40,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
   
   ksqldb-server:
-    image: confluentinc/ksqldb-server:0.12.0
+    image: confluentinc/ksqldb-server:0.14.0
     hostname: ksqldb-server
     container_name: ksqldb-server
     command: ["ksql-server-start", "/etc/ksqldb-server/server.properties"]
@@ -64,7 +64,7 @@ services:
   # with custom configs
   # docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088 --config-file /etc/ksqldb-cli/cli.properties
   ksqldb-cli:
-    image: confluentinc/ksqldb-cli:0.12.0
+    image: confluentinc/ksqldb-cli:0.14.0
     container_name: ksqldb-cli
     command: ["ksql", "http://ksqldb-server:8088", "--config-file", "/etc/ksqldb-cli/cli.properties"]
     depends_on:
