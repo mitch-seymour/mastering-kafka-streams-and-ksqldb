@@ -1,10 +1,9 @@
 # Mastering Kafka Streams and ksqlDB (early release)
 Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksqlDB][book] by Mitch Seymour
 
-<a href="https://www.kafka-streams-book.com/"><img src="https://mcusercontent.com/987def4caf0bb040419d778f2/images/022e702c-5886-42ed-9104-e13e2d690522.jpg" width="300"></a>
+<a href="https://www.kafka-streams-book.com/"><img src="https://mcusercontent.com/987def4caf0bb040419d778f2/images/81c6be7f-c833-4e12-a893-22545aaf7304.jpg" width="300"></a>
 
 [book]: https://www.kafka-streams-book.com/
-
 
 # Chapter Tutorials
   - [Chapter 1](chapter-01) - _A Rapid Introduction to Kafka_
