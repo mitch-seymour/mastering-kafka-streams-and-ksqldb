@@ -9,8 +9,9 @@ Code repository for the upcoming O'Reilly book: [Mastering Kafka Streams and ksq
 | Edition | Kafka Streams version | ksqlDB version | Publication Date | Branch |
 | --------| --------------------- | ---------------| -----------------| -------|
 | Early Release| 2.6.0 | 0.12.0| May 2020 | [early-release][early-release] |
-| 1st Edition| 2.7.0 | 0.14.0| February 2020 | [1st-edition][1st-edition] |Learning Platform|
+| [1st Edition][amzn]| 2.7.0 | 0.14.0| February 2021 | [1st-edition][1st-edition] |
 
+[amzn]: https://www.amazon.com/gp/product/1492062499/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1492062499&linkCode=as2&tag=mitchseymour-20&linkId=28979f4bdca5bc57af5ed2f8962d4d12
 [early-release]: https://github.com/mitch-seymour/mastering-kafka-streams-and-ksqldb/tree/early-release
 [1st-edition]: https://github.com/mitch-seymour/mastering-kafka-streams-and-ksqldb/tree/1st-edition
 
