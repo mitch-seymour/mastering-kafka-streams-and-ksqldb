@@ -31,7 +31,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   ksqldb-server:
-    image: confluentinc/ksqldb-server:0.12.0
+    image: confluentinc/ksqldb-server:0.14.0
     hostname: ksqldb-server
     container_name: ksqldb-server
     command: ["ksql-server-start", "ksql-server.properties"]
@@ -46,7 +46,7 @@ services:
   # log into the CLI by running:
   # docker-compose exec ksqldb-cli ksql http://ksqldb-server:8088
   ksqldb-cli:
-    image: confluentinc/ksqldb-cli:0.12.0
+    image: confluentinc/ksqldb-cli:0.14.0
     container_name: ksqldb-cli
     depends_on:
       - kafka

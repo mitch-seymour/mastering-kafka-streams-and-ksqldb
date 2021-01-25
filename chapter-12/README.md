@@ -30,7 +30,7 @@ $ cd ksqldb-tests/
 $ docker run  \
     -v "$(pwd)":/ksqldb/ \
     -w /ksqldb \
-    -ti confluentinc/ksqldb-server:0.12.0 \
+    -ti confluentinc/ksqldb-server:0.14.0 \
     ksql-test-runner -s statements.sql -i input.json -o output.json
     
 # look for "Test passed!" in the output
@@ -43,6 +43,8 @@ The following commands will start a local Kafka cluster using Docker Compose, an
 ```
 $ docker-compose up -d
 
+# run the command below to save your IP address to an env var.
+# you can also manually set this env var to your IP if needed
 $ MY_IP=$(ipconfig getifaddr en0);
 
 $ docker run \
@@ -56,7 +58,7 @@ $ docker run \
         -Dcom.sun.management.jmxremote.rmi.port=1099 \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.ssl=false" \
-    -ti confluentinc/ksqldb-server:0.12.0  \
+    -ti confluentinc/ksqldb-server:0.14.0  \
     ksql-server-start /ksqldb/config/server.properties
 ```
 
